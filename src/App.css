@@ -21,6 +21,7 @@
   font-weight: bold;
   display: flex;
   background-color: #fff;
+  color: black;
 }
 .scoreboard {
   display: flex;
@@ -41,4 +42,10 @@
 .player-o {
   color: green;
   font-weight: bold;
+}
+.cell-o {
+  color: green;
+}
+.cell-x {
+  color: red;
 }
