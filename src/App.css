@@ -1,0 +1,44 @@
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 10px;
+  background-color: #1f2937;
+  padding: 12px;
+  border-radius: 12px;
+}
+.cell {
+  width: 100px;
+  height: 100px;
+  box-sizing: border-box;
+  font-size: 3rem;
+  font-weight: bold;
+  display: flex;
+  background-color: #fff;
+}
+.scoreboard {
+  display: flex;
+  gap: 2rem;
+}
+.score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 1.25rem;
+  min-width: 60px;
+}
+.player-x {
+  color: red;
+  font-weight: bold;
+}
+.player-o {
+  color: green;
+  font-weight: bold;
+}
