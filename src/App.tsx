@@ -24,26 +24,58 @@ function calculateWinner(board: (Player | null)[]): boolean | null {
   return null;
 }
 
+function checkDraw(board: (Player | null)[]): boolean {
+  console.log(board);
+  for (let i = 0; i < board.length; i++) {
+    // for (let j = 0; j < board[i]!.length; j++) {
+    if (board[i] === null) {
+      return false;
+    }
+    // }
+  }
+  return true;
+}
+
 function App() {
   const [board, setBoard] = useState<(Player | null)[]>(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState<Player>("X");
   const [disabled, setDisabled] = useState<boolean>(false);
+  const [winnerX, setWinnerX] = useState<number>(0);
+  const [winnerO, setWinnerO] = useState<number>(0);
+  const [draw, setDraw] = useState<number>(0);
+  const resetGame = () => {
+    setBoard(Array(9).fill(null));
+    setDisabled(false);
+    setCurrentPlayer("X");
+  };
   const handleCellClick = (index: number) => {
     const newBoard = [...board];
     console.log(newBoard);
     newBoard[index] = currentPlayer;
     setBoard(newBoard);
-    const player = currentPlayer === "X" ? "O" : "X";
-    setCurrentPlayer(player);
-    const calculateWinner_ = calculateWinner(board);
+
+    const calculateWinner_ = calculateWinner(newBoard);
+    console.log(calculateWinner_);
     if (calculateWinner_) {
       setDisabled(true);
+      console.log(currentPlayer);
+      if (currentPlayer === "X") {
+        setWinnerX(winnerX + 1);
+      } else if (currentPlayer === "O") {
+        setWinnerO(winnerO + 1);
+      }
+      resetGame();
+    } else if (checkDraw(newBoard)) {
+      setDraw(draw + 1);
+      resetGame();
     }
+    const player = currentPlayer === "X" ? "O" : "X";
+    setCurrentPlayer(player);
   };
   return (
     <div className="game">
       <h1>Tic Tac Toe</h1>
-      <ScoreBoard scores={{ X: 10, O: 2, draws: 1 }} />
+      <ScoreBoard scores={{ X: winnerX, O: winnerO, draws: draw }} />
       <Board
         board={board}
         disabled={disabled}
