@@ -2,7 +2,9 @@ import { useState } from "react";
 import "./App.css";
 import ScoreBoard from "./component/ScoreBoard";
 import Board from "./component/Board";
+import ResultModal from "./component/ResultModal";
 type Player = "X" | "O";
+type PlayerWin = "X" | "O" | "Draw" ;
 
 const winningLines = [
   [0, 1, 2],
@@ -43,11 +45,20 @@ function App() {
   const [winnerX, setWinnerX] = useState<number>(0);
   const [winnerO, setWinnerO] = useState<number>(0);
   const [draw, setDraw] = useState<number>(0);
+  const [result, setResult] = useState<PlayerWin>("X");
+
   const resetGame = () => {
     setBoard(Array(9).fill(null));
     setDisabled(false);
     setCurrentPlayer("X");
   };
+  const endGame = () => {
+    resetGame();
+    setDraw(0);
+    setWinnerX(0);
+    setWinnerO(0);
+  };
+
   const handleCellClick = (index: number) => {
     const newBoard = [...board];
     console.log(newBoard);
@@ -61,13 +72,17 @@ function App() {
       console.log(currentPlayer);
       if (currentPlayer === "X") {
         setWinnerX(winnerX + 1);
+        setResult("X");
       } else if (currentPlayer === "O") {
         setWinnerO(winnerO + 1);
+        setResult("O");
       }
-      resetGame();
+      // resetGame();
     } else if (checkDraw(newBoard)) {
+      setDisabled(true);
       setDraw(draw + 1);
-      resetGame();
+      setResult("Draw");
+      // resetGame();
     }
     const player = currentPlayer === "X" ? "O" : "X";
     setCurrentPlayer(player);
@@ -81,6 +96,13 @@ function App() {
         disabled={disabled}
         onCellClick={handleCellClick}
       ></Board>
+      {disabled && (
+        <ResultModal
+          result={result}
+          onContinue={resetGame}
+          onFinish={endGame}
+        />
+      )}
     </div>
   );
 }
